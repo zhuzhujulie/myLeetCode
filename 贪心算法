@@ -1,1 +1,93 @@
 
+//遵循某种规律，不断贪心的选取当前最优策略的设计算法
+//(1)使用钞票
+//（2）LeetCode455 AssignCookies
+先排序，在一个个糖果判断
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        std::sort(g.begin(),g.end());
+        std::sort(s.begin(),s.end());
+        int child=0;
+        int cookie=0;
+        while(child<g.size()&&cookie<s.size())
+        {
+            if(g[child]<=s[cookie]){
+                child++;
+            }
+            cookie++;
+
+        }
+        return child;
+        
+    }
+};
+//（3）摇摆序列leetcode376 wiggle subsequence
+给一个随机序列，求序列中满足摇摆序列的最长子序列的长度
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        if(nums.size()<2){
+            return nums.size();
+        }
+        const int BEGIN=0;
+        const int UP=1;
+        const int DOWN=2;
+        int STATE=BEGIN;
+        int max_length=1;
+        for(int i=1;i<nums.size();i++){
+            switch(STATE){
+                case BEGIN:
+                    if(nums[i]>nums[i-1]){
+                        STATE=UP;
+                        max_length++;
+                    }else if(nums[i]<nums[i-1]){
+                        STATE=DOWN;
+                        max_length++;
+                    }
+                    break;
+                case UP:
+                    if(nums[i]<nums[i-1]){
+                        STATE=DOWN;
+                        max_length++;
+                    }
+                    break;
+                case DOWN:
+                    if(nums[i]>nums[i-1]){
+                        STATE=UP;
+                        max_length++;
+                    }
+                    break;
+            }
+        }
+        return max_length;
+        
+    }
+};
+(4)移除k个数字
+已知一个使用字符串表示的非负整数num，将num中的k个数字移除，求移除k个数字后肯恩获得的最小的肯恩的新数字
+LeetCode402   remove K Digits
+枚举不可能，天文数字
+ (5)跳跃游戏
+ LeetCode 55 Jump Game
+ class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        std::vector<int> index;
+        for(int i=0;i<nums.size();i++){
+            index.push_back(i+nums[i]);
+        }
+        int jump=0;
+        int max_index=index[0];
+        while(jump<=max_index&&jump<index.size()){
+            if(max_index<index[jump]){
+                max_index=index[jump];
+            }
+            jump++;
+        }
+        if(jump==index.size()){
+            return true;
+        }
+        return false;
+    }
+};
