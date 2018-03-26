@@ -1,2 +1,133 @@
-78 subsets
+//位运算和回溯法整体复杂度都是2^n
+LeetCode78 subsets
 求一个数组能够组成的所有的子集
+(1)回溯法
+  /*
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        std::vector<std::vector<int>> result;
+        std::vector<int>item;
+        result.push_back(item);
+        generate(0,nums,item,result);
+        return result;
+    }
+    
+    void generate(int i,std::vector<int>& nums, std::vector<int>& item,std::vector<std::vector<int>>&result){
+        if(i>=nums.size()){
+            return;
+        }
+        item.push_back(nums[i]);
+        result.push_back(item);
+        generate(i+1,nums,item,result);
+        item.pop_back();
+        generate(i+1,nums,item,result);
+    }*/
+    （2）位运算法
+    位运算法
+    public: std::vector<std::vector<int>> subsets(std::vector<int> &nums){
+        std::vector<std::vector<int>>result;
+        int all_set=1<<nums.size();
+        for(int i=0;i<all_set;i++)
+        {
+            std::vector<int> item;
+            for(int j=0;j<nums.size();j++)
+            {
+                if((i)&(1<<j))
+                {
+                    item.push_back(nums[j]);
+
+                }
+
+            }
+            result.push_back(item);
+
+        }
+        return result;
+    }
+
+LeetCode90 求一个数组能够组成的所有子集，不重复的子集的个数。
+回溯法，加一个set判断不重复
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        std::vector<std::vector<int>> result;
+        std::set<std::vector<int>>re_set;
+        std::vector<int>item;
+        std::sort(nums.begin(),nums.end());
+        result.push_back(item);
+        generate(0,nums,item,result,re_set);
+        return result;
+    }
+    
+    void generate(int i,std::vector<int>& nums, std::vector<int>& item,std::vector<std::vector<int>>&result,std::set<std::vector<int>>&re_set){
+        if(i>=nums.size()){
+            return;
+        }
+        item.push_back(nums[i]);
+        if(re_set.find(item)==re_set.end())
+        {
+            result.push_back(item);
+            re_set.insert(item);
+        }
+        
+        generate(i+1,nums,item,result,re_set);
+        item.pop_back();
+        generate(i+1,nums,item,result,re_set);
+    }
+40求一个数组能够组成的所有子集，元素之和等于某个特定的结果，并且是不重复的子集的个数。
+在回溯搜索过程中进行减枝操作
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        std::vector<std::vector<int>> result;
+        std::vector<int> item;
+        std::set<std::vector<int>> res_set;
+        std::sort(candidates.begin(),candidates.end());
+        generate(0,candidates,result,item,res_set,0,target);
+        return result;
+    }
+    private:
+    void generate(int i,std::vector<int>&nums,std::vector<std::vector<int>>&result,std::vector<int>&item,std::set<std::vector<int>>&res_set,int sum,int target)
+    {
+
+        if(i>=nums.size()||sum>target){
+            return;
+        }
+        sum+=nums[i];
+        item.push_back(nums[i]);
+        if(sum==target&&res_set.find(item)==res_set.end()){
+            result.push_back(item);
+            res_set.insert(item);
+        }
+        generate(i+1,nums,result,item,res_set,sum,target);
+        sum-=nums[i];
+        item.pop_back();
+        generate(i+1,nums,result,item,res_set,sum,target);
+    }
+};
+LeetCode22 生成括号
+首先利用递归能够生成所有的组合方式，然后用一些规则进行减枝
+只有放了左括号才能放右括号，左右括号数量都不能超过n
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        std::vector<std::string>result;
+        generate("",n,n,result);
+        return result;
+    }
+    private:
+    void generate(std::string item,int left,int right,std::vector<std::string>&result){
+        if(!left&&!right){
+            result.push_back(item);
+            return;
+        }
+        if(left>0){
+            generate(item+'(',left-1,right,result);
+        }
+        if(left<right){
+            generate(item+')',left,right-1,result);
+        }
+        
+    }
+};
+LeetCode 51 N-Queens  n皇后问题
+
