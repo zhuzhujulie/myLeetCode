@@ -137,4 +137,31 @@ LeetCode33旋转数组查找 Search in Rotated Sorted Array
 分解：分解成子问题
 求解：子问题较简单的时候求解
 合并：子问题逐层合并
+归并排序复杂度：o(nlogn)
+归并排序代码：
+void merge_two_vec(std::vector<int>&subvec1,std::vector<int>&subvec2,std::vector<int>&vec)
+{
+}
+void merge_sort(std::vector<int>&vec)
+{
+if(vec.size()==1)
+{
+return;
+}
+int mid=vec.size()/2;
+std::vector<int>sub_vec1;
+std::vector<int>sub_vec2;
+for(int i=0;i<mid;i++)
+{
+sub_vec1.push_back(vec[i]);
+}
+for(int i=mid;i<vec.size();i++)
+{
+sub_vec2.push_back(vec[i]);
+}
+merge_sort(sub_vec1);
+merge_sort(sub_vec2);
+vec.clear();
+merge_sort_two_vec(sub_vec1,sub_vec2,vec);
+}
 
